@@ -79,7 +79,7 @@ apt update -y
 apt install nginx -y
 myip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 myip_pub=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
-echo "<h2>WebServer with IP:<br>Private:$myip<br>Public:$myip_pub</h2><br>Build by Terraform using External Script!" > /var/www/html/index.html
+echo "<h2>WebServer with IP:<br>Private:$myip<br>Public:$myip_pub</h2><br>Build by Terraform!" > /var/www/html/index.html
 systemctl enable nginx
 systemctl start nginx
 EOF
