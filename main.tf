@@ -61,8 +61,17 @@ resource "yandex_compute_instance" "wedserver" {
   }
 
   metadata = {
-    user-data = file("user-data.sh")
+    user-data = templatefile("user-data.sh", {
+      nginx_config = base64encode(templatefile("nginx.conf.tpl", {}))
+      server_name  = var.server_config.server_name
+      environment  = var.server_config.environment
+      owner        = var.server_config.owner
+      project      = var.server_config.project
+      cpu_cores    = var.server_config.cpu_cores
+      memory_gb    = var.server_config.memory_gb
+    })
   }
 }
+
 
 
