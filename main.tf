@@ -12,22 +12,27 @@ resource "yandex_vpc_subnet" "web_subnet" {
 resource "yandex_vpc_security_group" "web_sg" {
   name        = "wed-security-group"
   network_id  = yandex_vpc_network.web.id
-
-  ingress {
+  
+  dynamic "ingress" {
+      for_each = ["80", "443"]
+    content {
+      from_port      = ingress.value
+      to_port        = ingress.value
+      protocol       = "tcp"
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    }
+  }  
+  
+  /*ingress {
     protocol       = "TCP"
     port           = 80
     v4_cidr_blocks = ["0.0.0.0/0"]
-  }
+  }*/
 
-  ingress {
-    protocol       = "TCP"
-    port           = 443
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  
   egress {
-    protocol       = "ANY"
+    from_port      = 0
+    to_port        = 0
+    protocol       = "any"
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -50,7 +55,7 @@ resource "yandex_compute_instance" "wedserver" {
   boot_disk {
     initialize_params {
       type     = "network-ssd"
-      image_id = "fd888dplf7gt1nguheht"
+      image_id = data.yandex_compute_image.ubuntu_2404.image_id
     }
   }
 
@@ -73,5 +78,8 @@ resource "yandex_compute_instance" "wedserver" {
   }
 }
 
+data "yandex_compute_image" "ubuntu_2404" {
+  family = "ubuntu-2404-lts-oslogin"
+}
 
 
