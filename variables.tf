@@ -17,3 +17,15 @@ variable "server_config" {
     memory_gb    = 1
   }
 }
+
+variable "yc_cloud_id" {
+  description = "Yandex Cloud Cloud ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "yc_folder_id" {
+  description = "Yandex Cloud Folder ID"  
+  type        = string
+  sensitive   = true
+}

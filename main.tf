@@ -16,22 +16,13 @@ resource "yandex_vpc_security_group" "web_sg" {
   dynamic "ingress" {
       for_each = ["80", "443"]
     content {
-      from_port      = ingress.value
-      to_port        = ingress.value
+      port           = ingress.value
       protocol       = "tcp"
       v4_cidr_blocks = ["0.0.0.0/0"]
     }
   }  
   
-  /*ingress {
-    protocol       = "TCP"
-    port           = 80
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  }*/
-
   egress {
-    from_port      = 0
-    to_port        = 0
     protocol       = "any"
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
