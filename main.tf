@@ -14,9 +14,9 @@ resource "yandex_vpc_security_group" "web_sg" {
   network_id  = yandex_vpc_network.web.id
   
   dynamic "ingress" {
-      for_each = ["80", "443"]
+      for_each = var.allow_ports
     content {
-      port           = ingress.value
+      port        = ingress.value
       protocol       = "tcp"
       v4_cidr_blocks = ["0.0.0.0/0"]
     }
@@ -31,8 +31,7 @@ resource "yandex_vpc_security_group" "web_sg" {
 resource "yandex_compute_instance" "wedserver" {
   name        = "web-server"
   platform_id = "standard-v3"
-  zone        = "ru-central1-a"
-   
+  
   scheduling_policy {
     preemptible = true
   }

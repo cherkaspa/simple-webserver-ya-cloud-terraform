@@ -29,3 +29,15 @@ variable "yc_folder_id" {
   type        = string
   sensitive   = true
 }
+
+variable "zone" {
+  description = "Default YC availability zone for deploy server"  
+  type        = string
+  default     = "ru-central1-a"
+}
+
+variable "allow_ports" {
+  description = "List of ports to open for server"  
+  type        = list
+  default     = ["80", "443", "8080", "8443"]
+}
